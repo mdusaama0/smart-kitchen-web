@@ -1,0 +1,114 @@
+# This "input" configures a global authorization rule to enable public access to
+# all models in this schema. Learn more about authorization rules here: https://docs.amplify.aws/cli/graphql/authorization-rules
+input AMPLIFY {
+  globalAuthRule: AuthRule = {allow: public}
+} # FOR TESTING ONLY!
+type Category @model {
+  id: ID!
+  name: String!
+  products: [Product] @hasMany
+}
+
+type Unit @model {
+  id: ID!
+  name: String!
+  products: [Product] @hasMany
+}
+
+type Product @model {
+  id: ID!
+  name: String!
+  categoryID: ID!
+  unitID: ID!
+  category: Category @belongsTo(fields: ["categoryID"])
+  unit: Unit @belongsTo(fields: ["unitID"])
+}
+
+type Supplier @model {
+  id: ID!
+  name: String!
+  contact: String!
+  address: String
+}
+
+type Recipe @model {
+  id: ID!
+  name: String!
+  cost: Int
+  imageURL: String
+  price: Int
+}
+
+type Ingredients @model {
+  id: ID!
+  recipeId: ID
+  category: String
+  product: String
+  productId: String
+  qty: Int
+  unit: String
+}
+
+type PurchaseOrder @model {
+  id: ID!
+  supplier: String
+  date: String
+  total: Int
+}
+
+type PurchaseDetails @model {
+  id: ID!
+  purchaseOrderId: ID
+  product: String
+  productID: ID
+  category: String
+  quantity: Int
+  unit: String
+  rate: Int
+  amount: Int
+}
+
+type ProductRate @model {
+  id: ID!
+  productID: ID
+  productName: String
+  rate: Int
+  avgRate: Float
+}
+
+type Stocks @model {
+  id: ID!
+  productID: ID
+  productName: String
+  stock: Float
+}
+
+type Order @model {
+  id: ID!
+  orderNumber: Int
+  amount: Int
+  status: String
+  paymentId: ID
+}
+
+type OrderDetails @model {
+  id: ID!
+  name: String
+  price: Int
+  qty: Int
+  orderId: ID
+}
+
+type Mutation {
+  createPaymentIntent(amount: Int!): PaymentIntent!
+    @function(name: "CreatePaymentIntent-${env}")
+}
+
+type PaymentIntent {
+  clientSecret: String
+}
+
+type Subscription {
+  onOrderUpdated(id: ID!): Order @aws_subscribe(mutations: ["updateOrder"])
+  # onCreateOrder: Order @aws_subscribe(mutations: ["createOrder"])
+}

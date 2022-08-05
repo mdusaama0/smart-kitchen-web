@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "smartdiningfyp",
+    "serviceName": "AppSync",
+    "gqlSchemaPath": "C:\\Users\\CC\\Documents\\React\\smart-dining\\amplify\\backend\\api\\smartdiningfyp\\schema.graphql",
+    "defaultAuthType": {
+      "mode": "API_KEY",
+      "expirationTime": 7
+    }
+  }
+}
